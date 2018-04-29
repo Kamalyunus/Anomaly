@@ -8,7 +8,8 @@ ui <- dashboardPage(skin = "blue",
     sidebarMenu(
       menuItem(tags$b("GMP"), tabName = "omni"),
       menuItem(tags$b("OGP"), tabName = "ogp"),
-      menuItem(tags$b("S2H"), tabName = "s2h")
+      menuItem(tags$b("S2H"), tabName = "s2h"),
+      menuItem(tags$b("ET"), tabName = "et")
     )
   ),
   dashboardBody(
@@ -23,7 +24,8 @@ ui <- dashboardPage(skin = "blue",
         dataTableOutput("plot")
     ),
     tabItem(tabName = "ogp",h2("Coming Soon!")),
-    tabItem(tabName = "s2h",h2("Coming Soon!"))
+    tabItem(tabName = "s2h",h2("Coming Soon!")),
+    tabItem(tabName = "et",h2("Coming Soon!"))
     )
   )
 )
