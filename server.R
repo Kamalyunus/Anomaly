@@ -58,10 +58,13 @@ server <- function(input, output) {
     hc
     })
   
-  output$plot<-renderDataTable({
+  output$plot<-renderDataTable(server = FALSE,{
     f<-t()[,-1]
     #colnames(f) <- c("Response Date", "#Surveys","#Surveys(Adjusted)","Outlier Flag")
-    datatable(f,rownames=FALSE,options = list(order=list(list(0,'desc'))))
+    datatable(f,rownames=FALSE,extensions = c('Buttons','Scroller'),
+              options = list(deferRender = TRUE,scrollCollapse = TRUE,scroller = TRUE,scrollY = 300,
+                             order=list(list(0,'desc')),dom = c('Bfrtip'),
+                             buttons = c('copy', 'csv')))
   })
   
 }
