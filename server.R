@@ -10,15 +10,17 @@ source('function.R')
 server <- function(input, output) {
   
   filedata<- reactive({
-    read_csv("data.csv") %>% 
-      filter(Survey=='Omni')
+    read_csv("data.csv")
   })
-  
+
+#___________________________________________OMNI TAB__________________________________________________    
   t <- reactive({
-    get_outlier(filedata(),"skdatecompletedqx","complete_total")
+    filedata_omni<-filedata() %>% 
+      filter(Survey=='Omni')
+    
+    get_outlier(filedata_omni,"skdatecompletedqx","complete_total")
   })
-  
-  lastanom="No"
+
   output$lastdayanomaly <- renderValueBox({
     check=tail(t()$outlier,1)
     check_d=tail(t()$skdatecompletedqx,1)
@@ -66,5 +68,16 @@ server <- function(input, output) {
                              order=list(list(0,'desc')),dom = c('Bfrtip'),
                              buttons = c('copy', 'csv')))
   })
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 }
