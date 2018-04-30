@@ -14,7 +14,7 @@ server <- function(input, output) {
   })
 
 #___________________________________________OMNI TAB__________________________________________________    
-  t <- reactive({
+  t_comp <- reactive({
     filedata_omni<-filedata() %>% 
       filter(Survey=='Omni')
     
@@ -22,8 +22,8 @@ server <- function(input, output) {
   })
 
   output$lastdayanomaly <- renderValueBox({
-    check=tail(t()$outlier,1)
-    check_d=tail(t()$skdatecompletedqx,1)
+    check=tail(t_comp()$outlier,1)
+    check_d=tail(t_comp()$skdatecompletedqx,1)
     if(check==1){lastanom="Yes"} else {lastanom="No"}
     valueBox(
       lastanom, "Was Yesterday Anomaly?", icon = icon("question-sign", lib = "glyphicon"),
@@ -32,7 +32,7 @@ server <- function(input, output) {
   })
   
   output$avgsurvey <- renderValueBox({
-    avg_sur<-round(mean(tail(t()$complete_total,7)),0)
+    avg_sur<-round(mean(tail(t_comp()$complete_total,7)),0)
     valueBox(
       avg_sur, "Avg Daily Count (Last 7 Days)", icon = icon("comments"),
       color = "blue"
@@ -40,28 +40,28 @@ server <- function(input, output) {
   })
   
   output$totalanomaly <- renderValueBox({
-    ct<-sum(tail(t()$outlier,7))
+    ct<-sum(tail(t_comp()$outlier,7))
     valueBox(
       if(ct!=0){ct} else {0}, "# Anomalies (Last 7 Days)", icon = icon("exclamation-sign", lib = "glyphicon"),
       color = "yellow"
     )
   })
   
-  output$hplot <- renderHighchart({
+  output$hplot_comp <- renderHighchart({
     hc<-highchart() %>% 
       hc_chart(type="line") %>% 
-      hc_title(text = "<b>GMP Daily Surveys</b>",align = "center") %>% 
-      hc_subtitle(text="Survey Completes (Last 60 Days)") %>% 
-      hc_yAxis(title = list(text = "<b>Survey Count</b>"),labels = list(format = "{value}")) %>% 
-      hc_add_series_times_values(name="Actual",date=t()$skdatecompletedqx, values=t()$complete_total, dataLabels=list(enabled = FALSE, format='{point.y}'),tooltip = list(pointFormat = '{series.name}: {point.y}')) %>% 
-      hc_add_series_times_values(name="Adjusted",date=t()$skdatecompletedqx, values=t()$adj_survey_count, dataLabels=list(enabled = FALSE, format='{point.y}'),tooltip = list(pointFormat = '{series.name}: {point.y}')) %>% 
-      hc_tooltip() %>% 
-      hc_exporting(enabled = TRUE) 
+#      hc_title(text = "<b>GMP Daily Surveys</b>",align = "center") %>% 
+#      hc_subtitle(text="Survey Completes (Last 60 Days)") %>% 
+#      hc_yAxis(title = list(text = "<b>Survey Count</b>"),labels = list(format = "{value}")) %>% 
+      hc_add_series_times_values(name="Actual",date=t_comp()$skdatecompletedqx, values=t_comp()$complete_total, dataLabels=list(enabled = FALSE, format='{point.y}'),tooltip = list(pointFormat = '{series.name}: {point.y}')) %>% 
+      hc_add_series_times_values(name="Adjusted",date=t_comp()$skdatecompletedqx, values=t_comp()$adj_survey_count, dataLabels=list(enabled = FALSE, format='{point.y}'),tooltip = list(pointFormat = '{series.name}: {point.y}')) %>% 
+      hc_tooltip() 
+#      hc_exporting(enabled = TRUE) 
     hc
     })
   
   output$plot<-renderDataTable(server = FALSE,{
-    f<-t()[,-1]
+    f<-t_comp()[,-1]
     #colnames(f) <- c("Response Date", "#Surveys","#Surveys(Adjusted)","Outlier Flag")
     datatable(f,rownames=FALSE,extensions = c('Buttons','Scroller'),
               options = list(deferRender = TRUE,scrollCollapse = TRUE,scroller = TRUE,scrollY = 300,
