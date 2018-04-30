@@ -3,7 +3,7 @@ library(shinydashboard)
 library(DT)
 library(highcharter)
 ui <- dashboardPage(skin = "blue",
-  dashboardHeader(title = tags$b("CX Platform Health")),
+  dashboardHeader(title = tags$b("CX Survey Stats")),
   dashboardSidebar(
     sidebarMenu(
       menuItem(tags$b("GMP"), tabName = "omni"),
