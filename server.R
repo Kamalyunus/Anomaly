@@ -61,8 +61,8 @@ server <- function(input, output) {
     })
   
   output$plot<-renderDataTable(server = FALSE,{
-    f<-t_comp()[,-1]
-    #colnames(f) <- c("Response Date", "#Surveys","#Surveys(Adjusted)","Outlier Flag")
+    f<-t_comp()[,2:6]
+    colnames(f) <- c("Response Date", "#Orders","#Emails","#Clicks","#Completes")
     datatable(f,rownames=FALSE,extensions = c('Buttons','Scroller'),
               options = list(deferRender = TRUE,scrollCollapse = TRUE,scroller = TRUE,scrollY = 300,
                              order=list(list(0,'desc')),dom = c('Bfrtip'),
