@@ -50,13 +50,9 @@ server <- function(input, output) {
   output$hplot_comp <- renderHighchart({
     hc<-highchart() %>% 
       hc_chart(type="line") %>% 
-#      hc_title(text = "<b>GMP Daily Surveys</b>",align = "center") %>% 
-#      hc_subtitle(text="Survey Completes (Last 60 Days)") %>% 
-#      hc_yAxis(title = list(text = "<b>Survey Count</b>"),labels = list(format = "{value}")) %>% 
       hc_add_series_times_values(name="Actual",date=t_comp()$skdatecompletedqx, values=t_comp()$complete_total, dataLabels=list(enabled = FALSE, format='{point.y}'),tooltip = list(pointFormat = '{series.name}: {point.y}')) %>% 
       hc_add_series_times_values(name="Adjusted",date=t_comp()$skdatecompletedqx, values=t_comp()$adj_survey_count, dataLabels=list(enabled = FALSE, format='{point.y}'),tooltip = list(pointFormat = '{series.name}: {point.y}')) %>% 
       hc_tooltip() 
-#      hc_exporting(enabled = TRUE) 
     hc
     })
   
